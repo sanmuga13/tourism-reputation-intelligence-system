@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: trip-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/trip_db
+    username: trip_user
+    password: trip_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate        # use 'create' only on first run, then switch to validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+# AI Service (Python FastAPI)
+ai:
+  service:
+    base-url: http://localhost:8000
+
+# Swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+
+# Logging
+logging:
+  level:
+    com.trip: DEBUG
+    org.springframework.web: INFO
