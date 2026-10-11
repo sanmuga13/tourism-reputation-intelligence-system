@@ -18,6 +18,7 @@ public class Forecast {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
     private TourismEntity entity;
 
     @Column(name = "target_date", nullable = false)
@@ -35,6 +36,8 @@ public class Forecast {
     @Column(name = "model_used")
     private String modelUsed;   // prophet, arima, lstm, ensemble
 
+    @org.hibernate.annotations.CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 }

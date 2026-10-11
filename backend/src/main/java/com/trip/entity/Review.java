@@ -3,6 +3,8 @@ package com.trip.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
     private TourismEntity entity;
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +40,9 @@ public class Review {
     @Column(name = "review_date")
     private LocalDate reviewDate;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

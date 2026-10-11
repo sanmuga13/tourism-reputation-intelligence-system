@@ -18,6 +18,7 @@ public class ReputationScore {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
     private TourismEntity entity;
 
     @Column(nullable = false, precision = 5, scale = 2)
@@ -38,8 +39,11 @@ public class ReputationScore {
     private String trend;   // improving, stable, declining
 
     @Column(name = "score_date", nullable = false)
+    @Builder.Default
     private LocalDate scoreDate = LocalDate.now();
 
+    @org.hibernate.annotations.CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 }

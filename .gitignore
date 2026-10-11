@@ -1,0 +1,31 @@
+# Maven
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/.venv/
+**/venv/
+ENV/
+*.env
+
+# Node / React
+**/node_modules/
+**/build/
+**/dist/
+.npm
+npm-debug.log*
+
+# IDE & OS
+.idea/
+*.iml
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
