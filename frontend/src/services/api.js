@@ -3,8 +3,8 @@
  * Provides fallback mock data if services are offline or in demonstration mode.
  */
 
-const BACKEND_URL = "http://localhost:8080";
-const AI_URL = "http://localhost:8000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+const AI_URL = import.meta.env.VITE_AI_URL || "http://localhost:8000";
 
 export const api = {
   // ── Entities ─────────────────────────────────────────────────────────────
