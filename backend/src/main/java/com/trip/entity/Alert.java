@@ -16,6 +16,7 @@ public class Alert {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"})
     private TourismEntity entity;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -26,9 +27,12 @@ public class Alert {
     private AlertSeverity severity;
 
     @Column(name = "is_resolved", nullable = false)
+    @Builder.Default
     private Boolean isResolved = false;
 
+    @org.hibernate.annotations.CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "resolved_at")

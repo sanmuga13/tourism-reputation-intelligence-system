@@ -9,11 +9,10 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
 @Tag(name = "Health", description = "Service health check")
 public class HealthController {
 
-    @GetMapping("/health")
+    @GetMapping({"/health", "/api/v1/health"})
     public Map<String, Object> health() {
         return Map.of(
             "status", "UP",

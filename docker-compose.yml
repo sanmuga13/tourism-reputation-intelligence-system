@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # ── PostgreSQL Database ──────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: trip-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: trip_db
+      POSTGRES_USER: trip_user
+      POSTGRES_PASSWORD: trip_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    networks:
+      - trip-network
+    healthcheck:
+      test: ["CMD-SHEEL", "pg_isready -U trip_user -d trip_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Spring Boot Backend ──────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trip-backend
+    restart: on-failure
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trip_db
+      SPRING_DATASOURCE_USERNAME: trip_user
+      SPRING_DATASOURCE_PASSWORD: trip_password
+      AI_SERVICE_BASE_URL: http://ai-service:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - trip-network
+
+  # ── Python FastAPI AI Service ───────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: trip-ai-service
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - trip-network
+
+  # ── React Dashboard Frontend ────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trip-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+      - ai-service
+    networks:
+      - trip-network
+
+networks:
+  trip-network:
+    driver: bridge
+
+volumes:
+  pgdata:

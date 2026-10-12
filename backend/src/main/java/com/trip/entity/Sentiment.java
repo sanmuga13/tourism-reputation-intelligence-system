@@ -26,7 +26,9 @@ public class Sentiment {
     @Column(name = "confidence_score", nullable = false, precision = 5, scale = 4)
     private BigDecimal confidenceScore;
 
+    @org.hibernate.annotations.CreationTimestamp
     @Column(name = "analyzed_at")
+    @Builder.Default
     private LocalDateTime analyzedAt = LocalDateTime.now();
 
     public enum SentimentLabel {
