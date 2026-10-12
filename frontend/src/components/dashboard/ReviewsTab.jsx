@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, Search, Filter, Sparkles } from 'lucide-react';
+import { MessageSquare, Search, Filter, Sparkles, Download, CheckCircle2 } from 'lucide-react';
 
 export default function ReviewsTab({ reviews, onOpenReviewModal }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,24 +14,54 @@ export default function ReviewsTab({ reviews, onOpenReviewModal }) {
     return matchesSearch && matchesSource && matchesSentiment;
   });
 
+  const posCount = reviews.filter(r => (r.sentimentLabel || 'POSITIVE') === 'POSITIVE').length;
+  const negCount = reviews.filter(r => r.sentimentLabel === 'NEGATIVE').length;
+  const neuCount = reviews.filter(r => r.sentimentLabel === 'NEUTRAL').length;
+
   return (
     <div className="space-y-6">
       
       {/* Header & Ingestion Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-display font-bold text-xl text-[#FAF9F6]">Guest Feedback Audit Repository</h2>
-          <p className="text-xs text-[#9EA3AE]">
-            Multi-channel verified guest reviews with automated sentiment polarity and departmental aspect attribution.
+          <h2 className="font-display font-bold text-xl text-[#FAF9F6] flex items-center space-x-2">
+            <MessageSquare className="w-5 h-5 text-[#E16B42]" />
+            <span>Guest Feedback Audit Repository</span>
+          </h2>
+          <p className="text-xs text-[#9EA3AE] mt-0.5">
+            Multi-channel verified guest reviews annotated with BERT polarity classification and departmental aspect attribution.
           </p>
         </div>
-        <button
-          onClick={onOpenReviewModal}
-          className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-[#E16B42] hover:bg-[#EE7E57] text-white text-xs font-semibold shadow-lg shadow-[#E16B42]/20 transition"
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Ingest Feedback Record</span>
-        </button>
+        
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={onOpenReviewModal}
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-[#E16B42] hover:bg-[#EE7E57] text-white text-xs font-semibold shadow-lg shadow-[#E16B42]/20 transition"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Ingest Feedback Record</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Summary KPI Chips */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="p-3.5 rounded-xl bg-[#14171D] border border-[#30343B]">
+          <span className="text-[10px] font-mono text-[#9EA3AE] uppercase block">Total Audited</span>
+          <span className="font-display font-bold text-xl text-[#FAF9F6]">{reviews.length} reviews</span>
+        </div>
+        <div className="p-3.5 rounded-xl bg-[#14171D] border border-[#30343B]">
+          <span className="text-[10px] font-mono text-[#9EA3AE] uppercase block">Positive Polarity</span>
+          <span className="font-display font-bold text-xl text-emerald-400">{posCount} records</span>
+        </div>
+        <div className="p-3.5 rounded-xl bg-[#14171D] border border-[#30343B]">
+          <span className="text-[10px] font-mono text-[#9EA3AE] uppercase block">Negative Polarity</span>
+          <span className="font-display font-bold text-xl text-rose-400">{negCount} records</span>
+        </div>
+        <div className="p-3.5 rounded-xl bg-[#14171D] border border-[#30343B]">
+          <span className="text-[10px] font-mono text-[#9EA3AE] uppercase block">Neutral Polarity</span>
+          <span className="font-display font-bold text-xl text-slate-300">{neuCount} records</span>
+        </div>
       </div>
 
       {/* Search & Filter Bar */}
@@ -54,7 +84,7 @@ export default function ReviewsTab({ reviews, onOpenReviewModal }) {
           onChange={(e) => setSelectedSource(e.target.value)}
           className="bg-[#0B0D12] border border-[#22262E] rounded-xl px-3 py-2 text-xs text-[#FAF9F6] focus:outline-none focus:border-[#E16B42]"
         >
-          <option value="ALL">All Sources</option>
+          <option value="ALL">All Sources (Google, TripAdvisor, Yelp, Reddit)</option>
           <option value="GOOGLE">Google Places</option>
           <option value="TRIPADVISOR">TripAdvisor</option>
           <option value="YELP">Yelp</option>
@@ -82,17 +112,17 @@ export default function ReviewsTab({ reviews, onOpenReviewModal }) {
           </div>
         ) : (
           filteredReviews.map((rev) => (
-            <div key={rev.id} className="p-5 rounded-2xl bg-[#14171D] border border-[#30343B] space-y-3">
+            <div key={rev.id} className="p-5 rounded-2xl bg-[#14171D] border border-[#30343B] space-y-3 hover:border-[#4B5563] transition shadow-md">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center space-x-2">
                   <span className="font-semibold text-[#FAF9F6]">{rev.reviewer || 'Verified Guest'}</span>
-                  <span className="font-mono text-[10px] bg-[#0B0D12] px-2 py-0.5 rounded text-[#D7BFA1]">
+                  <span className="font-mono text-[10px] bg-[#0B0D12] px-2 py-0.5 rounded text-[#D7BFA1] border border-[#22262E]">
                     {rev.source}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-amber-400 font-semibold">★ {rev.rating}</span>
-                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                  <span className="text-amber-400 font-semibold font-mono">★ {rev.rating}</span>
+                  <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full ${
                     rev.sentimentLabel === 'POSITIVE'
                       ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
                       : rev.sentimentLabel === 'NEGATIVE'
@@ -108,8 +138,9 @@ export default function ReviewsTab({ reviews, onOpenReviewModal }) {
                 "{rev.reviewText}"
               </p>
 
-              <div className="text-[10px] font-mono text-[#9EA3AE]">
-                Date: {rev.reviewDate}
+              <div className="flex items-center justify-between text-[10px] font-mono text-[#9EA3AE] pt-2 border-t border-[#22262E]">
+                <span>Date Ingested: {rev.reviewDate}</span>
+                <span className="text-emerald-400">JPA Verified</span>
               </div>
             </div>
           ))

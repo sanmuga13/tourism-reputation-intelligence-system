@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 const INDEX_ITEMS = [
-  { id: 'sentiment', number: '01', title: 'SENTIMENT', desc: 'Aspect-Based Natural Language Intelligence' },
-  { id: 'rootcauses', number: '02', title: 'ROOT CAUSES', desc: 'Semantic Topic Complaint Clustering' },
-  { id: 'reputation', number: '03', title: 'REPUTATION', desc: 'Composite 0–100 Weighted Mathematical Index' },
-  { id: 'forecasts', number: '04', title: 'FORECASTS', desc: '30/60/90-Day Predictive Horizon Modeling' },
-  { id: 'competitors', number: '05', title: 'COMPETITORS', desc: 'Multi-Property Dimensional Gap Benchmarking' },
+  { id: 'sentiment', number: '01', title: 'Sentiment Intelligence', desc: 'Aspect-Based Natural Language Intelligence' },
+  { id: 'rootcauses', number: '02', title: 'Root Cause Diagnostics', desc: 'Semantic Topic Complaint Clustering' },
+  { id: 'reputation', number: '03', title: 'Reputation Engine', desc: 'Composite 0–100 Weighted Mathematical Index' },
+  { id: 'forecasts', number: '04', title: 'Predictive Forecasts', desc: '30/60/90-Day Predictive Horizon Modeling' },
+  { id: 'competitors', number: '05', title: 'Competitor Intelligence', desc: 'Multi-Property Dimensional Gap Benchmarking' },
 ];
 
 export default function FeatureSideIndex({ activeSection = 'sentiment' }) {

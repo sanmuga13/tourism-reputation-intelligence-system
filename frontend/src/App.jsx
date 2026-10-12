@@ -24,6 +24,8 @@ import ForecastingTab from './components/dashboard/ForecastingTab';
 import CompetitorsTab from './components/dashboard/CompetitorsTab';
 import ReviewsTab from './components/dashboard/ReviewsTab';
 import ReportsTab from './components/dashboard/ReportsTab';
+import ReputationScoreTab from './components/dashboard/ReputationScoreTab';
+import SettingsTab from './components/dashboard/SettingsTab';
 import IngestPipelineAnimation from './components/ui/IngestPipelineAnimation';
 
 export default function App() {
@@ -260,12 +262,27 @@ export default function App() {
             />
           )}
 
+          {dashboardTab === 'reputation' && (
+            <ReputationScoreTab 
+              entity={selectedEntity}
+              reputationData={reputationData}
+              onRecompute={handleRecompute}
+              recomputing={recomputing}
+            />
+          )}
+
           {dashboardTab === 'reports' && (
             <ReportsTab 
               entity={selectedEntity}
               reputationData={reputationData}
               rootCauses={rootCauses}
               onDownloadReport={handleDownloadReport}
+            />
+          )}
+
+          {dashboardTab === 'settings' && (
+            <SettingsTab 
+              entity={selectedEntity}
             />
           )}
         </DashboardLayout>
