@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.Duration;
 import java.util.Map;
 
 @Service
@@ -24,7 +24,7 @@ public class AiClientService {
     private final AspectScoreRepository aspectScoreRepository;
     private final RootCauseRepository rootCauseRepository;
 
-    @Value("${ai.service.base-url}")
+    @Value("${ai.service.base-url:http://localhost:8000}")
     private String aiBaseUrl;
 
     /**
@@ -37,19 +37,25 @@ public class AiClientService {
 
         WebClient client = webClientBuilder.baseUrl(aiBaseUrl).build();
 
-        // Call AI service
-        Map<?, ?> result = client.post()
-                .uri("/analyze")
-                .bodyValue(Map.of(
-                        "review_id", reviewId,
-                        "text", review.getReviewText()
-                ))
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+        Map<?, ?> result = null;
+        try {
+            result = client.post()
+                    .uri("/analyze")
+                    .bodyValue(Map.of(
+                            "review_id", reviewId,
+                            "text", review.getReviewText()
+                    ))
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .timeout(Duration.ofSeconds(6))
+                    .block();
+        } catch (Exception ex) {
+            log.warn("AI service call failed or timed out for review id={}: {}", reviewId, ex.getMessage());
+            return;
+        }
 
         if (result == null) {
-            log.error("No response from AI service for review id={}", reviewId);
+            log.warn("No response from AI service for review id={}", reviewId);
             return;
         }
 
@@ -57,12 +63,16 @@ public class AiClientService {
         String label = (String) result.get("sentiment_label");
         Double confidence = (Double) result.get("confidence");
         if (label != null) {
-            Sentiment sentiment = Sentiment.builder()
-                    .review(review)
-                    .label(Sentiment.SentimentLabel.valueOf(label.toUpperCase()))
-                    .confidenceScore(BigDecimal.valueOf(confidence != null ? confidence : 0.5))
-                    .build();
-            sentimentRepository.save(sentiment);
+            try {
+                Sentiment sentiment = Sentiment.builder()
+                        .review(review)
+                        .label(Sentiment.SentimentLabel.valueOf(label.toUpperCase()))
+                        .confidenceScore(BigDecimal.valueOf(confidence != null ? confidence : 0.5))
+                        .build();
+                sentimentRepository.save(sentiment);
+            } catch (Exception e) {
+                log.warn("Failed to parse sentiment label '{}': {}", label, e.getMessage());
+            }
         }
 
         // Persist aspect scores

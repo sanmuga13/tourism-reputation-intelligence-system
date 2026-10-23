@@ -23,7 +23,7 @@ public class TourismEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "entity_type")
+    @Column(nullable = false, length = 50)
     private EntityType type;
 
     @Column(nullable = false)

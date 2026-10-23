@@ -1,5 +1,6 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
+  shutdown: graceful
 
 spring:
   profiles:
@@ -8,19 +9,24 @@ spring:
     name: trip-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/trip_db
-    username: trip_user
-    password: trip_password
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL:jdbc:postgresql://localhost:5432/trip_db}}
+    username: ${SPRING_DATASOURCE_USERNAME:${PGUSER:trip_user}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${PGPASSWORD:trip_password}}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: validate        # use 'create' only on first run, then switch to validate
+      ddl-auto: ${DDL_AUTO:update}
     show-sql: false
+    defer-datasource-initialization: true
+    open-in-view: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
+
+  sql:
+    init:
+      mode: ${SQL_INIT_MODE:never}
 
   jackson:
     default-property-inclusion: non_null
@@ -30,7 +36,7 @@ spring:
 # AI Service (Python FastAPI)
 ai:
   service:
-    base-url: http://localhost:8000
+    base-url: ${AI_SERVICE_URL:${AI_URL:http://localhost:8000}}
 
 # Swagger
 springdoc:
@@ -43,5 +49,5 @@ springdoc:
 # Logging
 logging:
   level:
-    com.trip: DEBUG
+    com.trip: INFO
     org.springframework.web: INFO

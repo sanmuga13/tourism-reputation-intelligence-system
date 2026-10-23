@@ -23,7 +23,7 @@ public class Alert {
     private String message;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "alert_severity")
+    @Column(nullable = false, length = 50)
     private AlertSeverity severity;
 
     @Column(name = "is_resolved", nullable = false)

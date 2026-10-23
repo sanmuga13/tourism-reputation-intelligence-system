@@ -1,4 +1,4 @@
-# Spring Boot Multi-stage Dockerfile
+# Spring Boot Multi-stage Dockerfile for Railway & Cloud Deployment
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 COPY pom.xml .
@@ -8,6 +8,7 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/app.jar app.jar
+ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java -XX:MaxRAMPercentage=75.0 -Dserver.port=${PORT:-8080} -jar app.jar"]

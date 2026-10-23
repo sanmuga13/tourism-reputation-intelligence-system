@@ -20,7 +20,7 @@ public class Sentiment {
     private Review review;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "sentiment_label")
+    @Column(nullable = false, length = 50)
     private SentimentLabel label;
 
     @Column(name = "confidence_score", nullable = false, precision = 5, scale = 4)
