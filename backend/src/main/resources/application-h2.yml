@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -18,12 +18,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     defer-datasource-initialization: true
     show-sql: false
-    properties:
-      hibernate:
-        format_sql: true
+    open-in-view: false
 
   sql:
     init:
@@ -38,7 +36,7 @@ spring:
 # AI Service (Python FastAPI)
 ai:
   service:
-    base-url: http://localhost:8000
+    base-url: ${AI_SERVICE_URL:${AI_URL:http://localhost:8000}}
 
 # Swagger
 springdoc:

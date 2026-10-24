@@ -25,6 +25,6 @@ public class AspectScore {
     private BigDecimal score;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "sentiment_label")
+    @Column(length = 50)
     private Sentiment.SentimentLabel label;
 }

@@ -37,7 +37,7 @@ export default function CinematicHero({ onEnterDashboard }) {
 
   return (
     <NoiseBackground 
-      className="relative min-h-screen w-full flex flex-col justify-between pt-28 pb-12 px-6 sm:px-12 overflow-hidden bg-[#0B0D12]"
+      className="relative min-h-[750px] lg:h-screen lg:max-h-[960px] w-full flex flex-col justify-between pt-24 pb-6 px-6 sm:px-12 overflow-hidden bg-[#0B0D12]"
       glowColor="copper"
     >
       {/* Background Radial Ambiance */}
@@ -58,12 +58,12 @@ export default function CinematicHero({ onEnterDashboard }) {
       >
         {/* Professional Category Tagline */}
         <div 
-          className={`inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#14171D]/90 border border-[#30343B] text-[11px] font-mono tracking-widest text-[#D7BFA1] mb-6 shadow-xl transition-all duration-700 ${
+          className={`inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#14171D]/90 border border-[#30343B] text-[10px] sm:text-[11px] font-mono tracking-widest text-[#D7BFA1] mb-3 sm:mb-4 shadow-xl transition-all duration-700 ${
             stage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
           }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#E16B42]" />
-          <span>ENTERPRISE REPUTATION INTELLIGENCE PLATFORM</span>
+          <span>HOSPITALITY REPUTATION INTELLIGENCE PLATFORM</span>
         </div>
 
         {/* Signature Interactive Headline */}
@@ -72,43 +72,43 @@ export default function CinematicHero({ onEnterDashboard }) {
             stage >= 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}
         >
-          <ShatterHeadline text="TRIP" subtitle="HOSPITALITY DATA & REPUTATION PLATFORM" />
+          <ShatterHeadline text="TRIP" subtitle="AUTONOMOUS REPUTATION BENCHMARK" />
         </div>
 
-        {/* Professional Statement */}
+        {/* Required Headline & Subheading */}
         <div 
-          className={`max-w-2xl mx-auto mt-4 md:mt-6 space-y-3 transition-all duration-700 delay-200 ${
+          className={`max-w-2xl mx-auto mt-2 sm:mt-4 space-y-2 sm:space-y-3 transition-all duration-700 delay-200 ${
             stage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <h2 className="font-display font-medium text-2xl sm:text-3xl md:text-4xl text-[#FAF9F6] tracking-tight leading-snug">
-            Transform guest feedback into <span className="font-serif italic text-[#D7BFA1]">operational clarity.</span>
-          </h2>
-          <p className="text-sm sm:text-base text-[#9EA3AE] font-light leading-relaxed max-w-xl mx-auto">
-            Consolidate multi-channel reviews into department-level diagnostics, predictive score forecasting, and competitive benchmarking for hospitality leadership.
+          <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#FAF9F6] tracking-tight leading-tight">
+            Every review. <span className="font-serif italic text-[#D7BFA1]">A revelation.</span>
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-[#9EA3AE] font-light leading-relaxed max-w-xl mx-auto">
+            Transform the voice of every guest into the intelligence behind every better decision.
           </p>
         </div>
 
-        {/* Executive CTAs */}
+        {/* Executive CTAs with Magnetic Hover */}
         <div 
-          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 transition-all duration-700 delay-300 ${
+          className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 transition-all duration-700 delay-300 ${
             stage >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
           <button
             onClick={handleScrollExplore}
-            className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#E16B42] to-[#BC674F] hover:from-[#EE7E57] hover:to-[#E16B42] text-white font-medium text-sm tracking-wide shadow-xl shadow-[#E16B42]/20 hover:shadow-[#E16B42]/35 transition-all duration-300 flex items-center justify-center space-x-2"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#E16B42] to-[#BC674F] hover:from-[#EE7E57] hover:to-[#E16B42] text-white font-medium text-xs sm:text-sm tracking-wide shadow-xl shadow-[#E16B42]/20 hover:shadow-[#E16B42]/35 transition-all duration-300 flex items-center justify-center space-x-2 transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            <span>Platform Overview</span>
-            <ArrowDown className="w-4 h-4" />
+            <span>Explore Architecture</span>
+            <ArrowDown className="w-3.5 h-3.5" />
           </button>
 
           <button
             onClick={onEnterDashboard}
-            className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#14171D] hover:bg-[#1C2028] border border-[#30343B] text-[#FAF9F6] font-medium text-sm tracking-wide shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 group"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#14171D] hover:bg-[#1C2028] border border-[#30343B] hover:border-[#E16B42]/50 text-[#FAF9F6] font-medium text-xs sm:text-sm tracking-wide shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 group transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            <LayoutDashboard className="w-4 h-4 text-[#D7BFA1]" />
-            <span>Launch Executive Dashboard</span>
+            <LayoutDashboard className="w-3.5 h-3.5 text-[#D7BFA1] group-hover:text-[#E16B42] transition-colors" />
+            <span>Launch Executive Workstation</span>
           </button>
         </div>
       </div>

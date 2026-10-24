@@ -26,7 +26,7 @@ public class Review {
     private TourismEntity entity;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "review_source")
+    @Column(nullable = false, length = 50)
     private ReviewSource source;
 
     private String reviewer;
