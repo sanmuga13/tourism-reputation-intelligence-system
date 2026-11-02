@@ -24,12 +24,14 @@ public class ReviewService {
     private final TourismEntityService entityService;
     private final AiClientService aiClientService;
 
+    @Transactional(readOnly = true)
     public Page<ReviewResponse> getReviewsByEntity(Long entityId, Pageable pageable) {
         entityService.findOrThrow(entityId);   // validates entity exists
         return reviewRepository.findByEntityId(entityId, pageable)
                 .map(this::toResponse);
     }
 
+    @Transactional(readOnly = true)
     public ReviewResponse getReviewById(Long id) {
         Review review = findOrThrow(id);
         return toResponse(review);
